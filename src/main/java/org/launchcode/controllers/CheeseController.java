@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Brady on 3/9/17.
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 @RequestMapping("cheese")
 public class CheeseController {
 
-    static ArrayList<String> cheeses = new ArrayList<>();
+    static HashMap<String, String> cheeses = new HashMap<>();
 
     @RequestMapping(value= "")
     public String index(Model model){
@@ -33,9 +34,33 @@ public class CheeseController {
     }
 
     @RequestMapping(value="add", method = RequestMethod.POST)
-    public String processAddCheeseForm(@RequestParam String cheeseName) {
-        cheeses.add(cheeseName);
+    public String processAddCheeseForm(@RequestParam String cheeseName, String cheeseDescription) {
+        cheeses.put(cheeseName, cheeseDescription);
         return "redirect:";
     }
+
+    @RequestMapping(value="remove", method = RequestMethod.GET)
+    public String displayRemoveCheeseForm(Model model) {
+        ArrayList<String> cheeseNames = new ArrayList<String>();
+        model.addAttribute("cheeseNames", cheeseNames);
+        model.addAttribute("title", "Remove Cheese");
+        for(String entry : cheeses.keySet()){
+            cheeseNames.add(entry);
+        }
+        return "cheese/remove";
+    }
+
+    @RequestMapping(value="remove", method= RequestMethod.POST)
+    public String processRemoveCheeseForm(@RequestParam String name){
+
+        for(String key : cheeses.keySet()){
+            if(key.equals(name)){
+                cheeses.remove(key);
+            }
+        }
+
+        return "redirect:";
+    }
+
 
 }
