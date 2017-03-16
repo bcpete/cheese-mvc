@@ -7,17 +7,24 @@
 <body>
 <h1 th:text="${title}"></h1>
 
-<form method="post">
-    <ul>
-        <li th:each="name : ${cheeseNames}">
-            <input type="checkbox" name="name" th:value="${name}" />
-            <label th:for="${cheeseNames}"
-                   th:text="${name}"
-                   name="${name}"></label>
-        </li>
-    </ul>
-    <input type="submit" />
-</form>
+<div class="container">
+    <div class="row">
+        <form method="POST">
+            <table>
+                <tbody>
+                    <tr th:each="cheese : ${cheeses}">
+                        <td>
+                            <input type="checkbox" th:name="delete" th:value="${cheese.name}"/>
+                        </td>
+                        <td th:text ="${cheese.name}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <input type="submit"/>
+        </form>
+    </div>
+
+</div>
 
 </body>
 </html>
